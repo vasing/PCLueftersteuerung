@@ -1,6 +1,17 @@
 #define outPIN 2
 #define InterruptPIN 5
-#define pwmPIN 15
+#define pwmPIN 15 
+/* NodeMCU PWM-Pins
+  D1  5
+  D2  4
+  D3  0
+  D4  2
+  D5  14
+  D6  12
+  D7  13
+  D8  15
+*/
+
 
 int incomingByte = 0; // serial incomming data
 int dutyCycle = 100; // PWM dutyCycle initial
@@ -16,7 +27,21 @@ void setup() {
   Serial.begin(115200);
 
   analogWriteFreq(25000); // set PWM frequency to 20kHz
+
   analogWrite(pwmPIN, 128);
+  /*  %   DEC
+      0   0
+      10  
+      20
+      30
+      40
+      50  128
+      60
+      70
+      80
+      90
+      100 255
+  */
 }
 
 void loop() {
