@@ -1,6 +1,6 @@
-#define outPIN 2
-#define InterruptPIN 5
-#define pwmPIN 15 
+const int outPIN = 2
+const int InterruptPIN = 5
+const int pwmPIN = 15 
 /* NodeMCU PWM-Pins
   D1  5
   D2  4
