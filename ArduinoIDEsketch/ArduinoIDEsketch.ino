@@ -71,22 +71,22 @@ void loop() {
   {
     case warm:
       // do stuff
-      // maybe change state
+      Serial.println(State: warm);
       break;
 
     case heizen:
       // do stuff
-      // maybe change state
+      Serial.println(State: heizen);
       break;
 
     case nachlauf:
       // do stuff
-      // maybe change state
+      Serial.println(State: nachlauf);
       break;
 
-    case save:
+    case safe:
       // do stuff
-      // maybe change state
+      Serial.println(State: safe);
       break;
 
   }
