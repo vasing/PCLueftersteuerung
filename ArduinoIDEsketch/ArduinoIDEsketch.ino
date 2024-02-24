@@ -1,6 +1,11 @@
 const int outPIN = 2
 const int InterruptPIN = 5
 const int pwmPIN = 15 
+const int T_Tmin = 23 //tbd
+const int T_Tmax = 27 //tbd
+const int t_N = 6000  //tbd Luefter Nachlaufzeit [ms]
+const int t_soll = 25 //tbd Soll-Temp 
+const int t_hy = 2    //tbd Hysterese Abweichung
 /* NodeMCU PWM-Pins
   D1  5
   D2  4
@@ -61,6 +66,34 @@ void loop() {
   
   analogWrite(0, dutyCycle);
   Serial.println(incomingByte, DEC);
+
+  switch (state)
+  {
+    case warm:
+      // do stuff
+      // maybe change state
+      break;
+
+    case heizen:
+      // do stuff
+      // maybe change state
+      break;
+
+    case nachlauf:
+      // do stuff
+      // maybe change state
+      break;
+
+    case save:
+      // do stuff
+      // maybe change state
+      break;
+
+  }
+}
+
+
+
 }
 
 void ICACHE_RAM_ATTR ISR() {
