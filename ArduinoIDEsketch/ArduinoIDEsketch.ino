@@ -1,20 +1,28 @@
-const int outPIN = 2
-const int InterruptPIN = 5
-const int pwmPIN = 15 
+/*PINS*/
+const int tacho_PIN = 5
+const int DHT1_PIN = 12
+const int DHT2_PIN = 13
+const int luefter_PIN = 4
+const int heizung_PIN = 0
+//const int pwmPIN = 15 
+const int safety_PIN = 15
+const int safety_temp_PIN = 14
+
+/*VARIABLES*/
 const int T_Tmin = 23 //tbd
 const int T_Tmax = 27 //tbd
 const int t_N = 6000  //tbd Luefter Nachlaufzeit [ms]
 const int t_soll = 25 //tbd Soll-Temp 
 const int t_hy = 2    //tbd Hysterese Abweichung
 /* NodeMCU PWM-Pins
-  D1  5
-  D2  4
-  D3  0
-  D4  2
-  D5  14
-  D6  12
-  D7  13
-  D8  15
+  D1  5 Tacho
+  D2  4 Luefter
+  D3  0 Heizung
+  D4  2 
+  D5  14 Safety Temp (DS18B20)
+  D6  12  DHT1
+  D7  13  DHT2
+  D8  15  Safety LED
 */
 
 
@@ -24,16 +32,22 @@ int dutyCycle = 100; // PWM dutyCycle initial
 void ICACHE_RAM_ATTR ISR();
 
 void setup() {
-  // put your setup code here, to run once:
-  pinMode(InterruptPIN, INPUT); //D1
-  pinMode(outPIN, OUTPUT); //D4
-  pinMode(pwmPIN, OUTPUT); //D8 PWM
-  attachInterrupt(digitalPinToInterrupt(InterruptPIN), ISR, CHANGE);
+/*PINs*/
+  pinMode(tacho_PIN, INPUT); 
+  attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR, CHANGE);
+  pinMode(DHT1_PIN, INPUT);
+  pinMode(DHT2_PIN, INPUT);
+  pinMode(luefter_PIN, OUTPUT);
+  pinMode(heizung_PIN, OUTPUT);
+  pinMode(safety_PIN, OUTPUT); 
+  pinMode(safety_temp_PIN, INPUT_PULLUP); 
+
+/*SERIAL UART*/
   Serial.begin(115200);
 
-  analogWriteFreq(25000); // set PWM frequency to 20kHz
-
-  analogWrite(pwmPIN, 128);
+/*PWM Setup*/
+  //analogWriteFreq(25000); // set PWM frequency to 20kHz
+  //analogWrite(pwmPIN, 128);
   /*  %   DEC
       0   0
       10  
