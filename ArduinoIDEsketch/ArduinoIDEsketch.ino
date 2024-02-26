@@ -1,23 +1,23 @@
 /*PINS*/
-const int tacho_PIN = 5
-const int DHT1_PIN = 12
-const int DHT2_PIN = 13
-const int luefter_PIN = 4
-const int heizung_PIN = 0
+const int tacho_PIN = 5;
+const int DHT1_PIN = 12;
+const int DHT2_PIN = 13;
+const int luefter_PIN = 4;
+const int heizung_PIN = 0;
 //const int pwmPIN = 15 
-const int safety_PIN = 15
-const int safety_temp_PIN = 14
+const int safety_PIN = 15;
+const int safety_temp_PIN = 14;
 
-/*VARIABLES*/
-const int T_Tmin = 23 //tbd
-const int T_Tmax = 27 //tbd
-const int t_N = 6000  //tbd Luefter Nachlaufzeit [ms]
-const int t_soll = 25 //tbd Soll-Temp 
-const int t_hy = 2    //tbd Hysterese Abweichung
+/*VARIABLE*/
+const int T_Tmin = 23; //tbd
+const int T_Tmax = 27; //tbd
+const int t_N = 6000;  //tbd Luefter Nachlaufzeit [ms]
+const int t_soll = 25; //tbd Soll-Temp 
+const int t_hy = 2;    //tbd Hysterese Abweichung
 /* NodeMCU PWM-Pins
   D1  5 Tacho
   D2  4 Luefter
-  D3  0 Heizung
+  D3  0 Heizung+
   D4  2 
   D5  14 Safety Temp (DS18B20)
   D6  12  DHT1
@@ -25,10 +25,12 @@ const int t_hy = 2    //tbd Hysterese Abweichung
   D8  15  Safety LED
 */
 
-
+/*SERIAL UART*/
 int incomingByte = 0; // serial incomming data
-int dutyCycle = 100; // PWM dutyCycle initial
 
+//int dutyCycle = 100; // PWM dutyCycle initial
+
+/*FUNCTIONS*/
 void ICACHE_RAM_ATTR ISR();
 
 void setup() {
@@ -66,21 +68,11 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
     // send data only when you receive data:
-  if (Serial.available() > 0) {
-    // read the incoming byte:
-    incomingByte = Serial.read();
-
-    // say what you got:
-    Serial.print("I received: ");
-    Serial.println(incomingByte, DEC);
-    dutyCycle = dutyCycle;
-    delay(1000);
-  }
   
-  
-  analogWrite(0, dutyCycle);
-  Serial.println(incomingByte, DEC);
-
+  digitalWrite(luefter_PIN, HIGH);
+  digitalWrite(heizung_PIN, LOW);
+  delay(1000);
+/*
   switch (state)
   {
     case warm:
@@ -104,10 +96,7 @@ void loop() {
       break;
 
   }
-}
-
-
-
+  */
 }
 
 void ICACHE_RAM_ATTR ISR() {
