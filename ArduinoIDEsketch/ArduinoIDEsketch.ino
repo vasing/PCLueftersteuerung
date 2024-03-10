@@ -1,29 +1,41 @@
-/*PINS*/
-const int tacho_PIN = 5;
-const int DHT1_PIN = 12;
-const int DHT2_PIN = 13;
-const int luefter_PIN = 4;
-const int heizung_PIN = 0;
+/*PINS-------------------------*/
+//INPPUT
+int tacho_PIN = 5;
+int DHT1_PIN = 12;
+int DHT2_PIN = 13;
+int safety_temp_PIN = 14;
+int heizung_Taster_PIN = 5;   //todo Doku
+//OUTPUT
+int luefter_PIN = 4;
+int heizung_PIN = 0;
 //const int pwmPIN = 15 
-const int safety_PIN = 15;
-const int safety_temp_PIN = 14;
+int safety_PIN = 15;
+/*-----------------------------*/
+
+/* ESP8266 NodeMCU GPIO Pins
+ PIN   GPIO
+(D0) = 16 
+  D1 = 5  heizung_Taster_PIN
+  D2 = 4  luefter_PIN
+(D3) = 0  heizung_PIN
+(D4) = 2  
+  D5 = 14 Safety Temp (DS18B20)
+  D6 = 12 DHT1
+  D7 = 13 DHT2
+  D8 = 15 Safety LED
+(RX) = 3
+(TX) = 1
+ SD3 = 10 
+ SD2 = 9
+-----------------------------*/
 
 /*VARIABLE*/
-const int T_Tmin = 23; //tbd
-const int T_Tmax = 27; //tbd
-const int t_N = 6000;  //tbd Luefter Nachlaufzeit [ms]
-const int t_soll = 25; //tbd Soll-Temp 
-const int t_hy = 2;    //tbd Hysterese Abweichung
-/* NodeMCU PWM-Pins
-  D1  5 Tacho
-  D2  4 Luefter
-  D3  0 Heizung+
-  D4  2 
-  D5  14 Safety Temp (DS18B20)
-  D6  12  DHT1
-  D7  13  DHT2
-  D8  15  Safety LED
-*/
+int T_Tmin = 23; //tbd
+int T_Tmax = 27; //tbd
+int t_N = 6000;  //tbd Luefter Nachlaufzeit [ms]
+int t_soll = 25; //tbd Soll-Temp 
+int t_hy = 2;    //tbd Hysterese Abweichung
+bool Heizung_Status = LOW;
 
 /*SERIAL UART*/
 int incomingByte = 0; // serial incomming data
@@ -31,18 +43,25 @@ int incomingByte = 0; // serial incomming data
 //int dutyCycle = 100; // PWM dutyCycle initial
 
 /*FUNCTIONS*/
-void ICACHE_RAM_ATTR ISR();
+void ICACHE_RAM_ATTR ISR_Heizung_Taster();
+void ICACHE_RAM_ATTR ISR_TACHO();
 
 void setup() {
 /*PINs*/
   pinMode(tacho_PIN, INPUT); 
-  attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR, CHANGE);
+  
+  
+  attachInterrupt(digitalPinToInterrupt(heizung_Taster_PIN), ISR_Heizung_Taster, FALLING);
+  attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR_TACHO, CHANGE);
+  
+  
   pinMode(DHT1_PIN, INPUT);
   pinMode(DHT2_PIN, INPUT);
   pinMode(luefter_PIN, OUTPUT);
   pinMode(heizung_PIN, OUTPUT);
   pinMode(safety_PIN, OUTPUT); 
   pinMode(safety_temp_PIN, INPUT_PULLUP); 
+  pinMode(heizung_Taster_PIN, INPUT_PULLUP); 
 
 /*SERIAL UART*/
   Serial.begin(115200);
@@ -66,12 +85,18 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-    // send data only when you receive data:
-  
-  digitalWrite(luefter_PIN, HIGH);
-  digitalWrite(heizung_PIN, LOW);
+
+  if (Heizung_Status == HIGH) {
+    digitalWrite(heizung_PIN, HIGH);
+    Serial.println("Set LED ON");
+  } 
+  else {
+    digitalWrite(heizung_PIN, LOW);
+    Serial.println("Set LED OFF");
+  }
+
   delay(1000);
+  Serial.println("LOOP");
 /*
   switch (state)
   {
@@ -99,7 +124,14 @@ void loop() {
   */
 }
 
-void ICACHE_RAM_ATTR ISR() {
+void ICACHE_RAM_ATTR ISR_Heizung_Taster() {
  digitalWrite(2, !digitalRead(2));
-  Serial.println("ISR");
+  Serial.println("ISR Tacho");
+  delay(1000); //Taster entprellen
 }
+
+void ICACHE_RAM_ATTR ISR_TACHO() {
+ Heizung_Status = !Heizung_Status;
+ Serial.println("ISR Heizung Tater");
+}
+
