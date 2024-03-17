@@ -98,22 +98,24 @@ void loop() {
 
   delay(1000);
   Serial.println("LOOP");
+
+
 /*
   switch (state)
   {
-    case warm:
+    case off:
       // do stuff
-      Serial.println(State: warm);
+      Serial.println(State: off);
       break;
 
-    case heizen:
+    case on:
       // do stuff
-      Serial.println(State: heizen);
+      Serial.println(State: on);
       break;
 
-    case nachlauf:
+    case flow_down:
       // do stuff
-      Serial.println(State: nachlauf);
+      Serial.println(State: flow_down);
       break;
 
     case safe:
@@ -122,7 +124,9 @@ void loop() {
       break;
 
   }
-  */
+*/
+
+
 }
 
 void ICACHE_RAM_ATTR ISR_Heizung_Taster() {
