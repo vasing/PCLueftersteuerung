@@ -8,7 +8,7 @@ int heizung_Taster_PIN = 5;   //todo Doku
 //OUTPUT
 int luefter_PIN = 4;
 int heizung_PIN = 0;
-//const int pwmPIN = 15 
+//const int pwmPIN = 15   
 int safety_PIN = 15;
 /*-----------------------------*/
 
@@ -29,7 +29,7 @@ int safety_PIN = 15;
  SD2 = 9
 -----------------------------*/
 
-/*VARIABLE*/
+/*VARIABLEN State Machine*/
 int T_Tmin = 23; //tbd
 int T_Tmax = 27; //tbd
 int t_N = 6000;  //tbd Luefter Nachlaufzeit [ms]
@@ -37,9 +37,10 @@ int t_soll = 25; //tbd Soll-Temp
 int t_hy = 2;    //tbd Hysterese Abweichung
 bool Heizung_Status = LOW;
 
-/*SERIAL UART*/
+/*VARIABLEN SERIAL UART*/
 int incomingByte = 0; // serial incomming data
 
+/*VARIABLEN PWM*/
 //int dutyCycle = 100; // PWM dutyCycle initial
 
 /*FUNCTIONS*/
