@@ -1,32 +1,34 @@
 /*PINS-------------------------*/
 //INPPUT
-int tacho_PIN = 5;
-int DHT1_PIN = 12;
-int DHT2_PIN = 13;
-int safety_temp_PIN = 14;
-int heizung_Taster_PIN = 5;   //todo Doku
+int const tacho_PIN = 13;
+int const DHT1_PIN = 9;
+int const DHT2_PIN = 10;
+int const safety_temp_PIN = 12;
+int const heizung_Taster_PIN = 14;   //todo Doku
 //OUTPUT
-int luefter_PIN = 4;
-int heizung_PIN = 0;
+int const luefter_PIN = 4;
+int const heizung_PIN = 5;
+int const led_PIN = 0;
+int const relais_PIN = 2
 //const int pwmPIN = 15   
-int safety_PIN = 15;
+int const safety_PIN = 15;
 /*-----------------------------*/
 
 /* ESP8266 NodeMCU GPIO Pins
  PIN   GPIO
 (D0) = 16 
-  D1 = 5  heizung_Taster_PIN
+  D1 = 5  heizung_PIN
   D2 = 4  luefter_PIN
-(D3) = 0  heizung_PIN
-(D4) = 2  
+(D3) = 0  led_PIN
+(D4) = 2  relais_PIN
   D5 = 14 Safety Temp (DS18B20)
-  D6 = 12 DHT1
-  D7 = 13 DHT2
-  D8 = 15 Safety LED
+  D6 = 12 safety_temp_PIN
+  D7 = 13 tacho_PIN
+  D8 = 15 safety_PIN
 (RX) = 3
 (TX) = 1
- SD3 = 10 
- SD2 = 9
+ SD3 = 10 DHT2
+ SD2 = 9  DHT1
 -----------------------------*/
 
 /*VARIABLEN State Machine*/
