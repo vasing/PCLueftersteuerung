@@ -52,16 +52,14 @@ void ICACHE_RAM_ATTR ISR_TACHO();
 void setup() {
 /*PINs*/
   pinMode(tacho_PIN, INPUT); 
-  
-  
   attachInterrupt(digitalPinToInterrupt(heizung_Taster_PIN), ISR_Heizung_Taster, FALLING);
   attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR_TACHO, CHANGE);
-  
-  
   pinMode(DHT1_PIN, INPUT);
   pinMode(DHT2_PIN, INPUT);
   pinMode(luefter_PIN, OUTPUT);
   pinMode(heizung_PIN, OUTPUT);
+  pinMode(relais_PIN, OUTPUT);
+  pinMode(led_PIN, OUTPUT);
   pinMode(safety_PIN, OUTPUT); 
   pinMode(safety_temp_PIN, INPUT_PULLUP); 
   pinMode(heizung_Taster_PIN, INPUT_PULLUP); 
