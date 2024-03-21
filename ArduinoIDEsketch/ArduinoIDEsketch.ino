@@ -9,7 +9,7 @@ int const heizung_Taster_PIN = 14;   //todo Doku
 int const luefter_PIN = 4;
 int const heizung_PIN = 5;
 int const led_PIN = 0;
-int const relais_PIN = 2
+int const relais_PIN = 2;
 //const int pwmPIN = 15   
 int const safety_PIN = 15;
 /*-----------------------------*/
@@ -51,18 +51,21 @@ void ICACHE_RAM_ATTR ISR_TACHO();
 
 void setup() {
 /*PINs*/
+//INPPUT
   pinMode(tacho_PIN, INPUT); 
   attachInterrupt(digitalPinToInterrupt(heizung_Taster_PIN), ISR_Heizung_Taster, FALLING);
   attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR_TACHO, CHANGE);
   pinMode(DHT1_PIN, INPUT);
-  pinMode(DHT2_PIN, INPUT);
+   pinMode(safety_temp_PIN, INPUT_PULLUP); 
+  pinMode(heizung_Taster_PIN, INPUT_PULLUP); 
+//OUTPUT
   pinMode(luefter_PIN, OUTPUT);
   pinMode(heizung_PIN, OUTPUT);
   pinMode(relais_PIN, OUTPUT);
   pinMode(led_PIN, OUTPUT);
+
   pinMode(safety_PIN, OUTPUT); 
-  pinMode(safety_temp_PIN, INPUT_PULLUP); 
-  pinMode(heizung_Taster_PIN, INPUT_PULLUP); 
+
 
 /*SERIAL UART*/
   Serial.begin(115200);
@@ -87,15 +90,30 @@ void setup() {
 
 void loop() {
 
-  if (Heizung_Status == HIGH) {
-    digitalWrite(heizung_PIN, HIGH);
-    Serial.println("Set LED ON");
-  } 
-  else {
-    digitalWrite(heizung_PIN, LOW);
-    Serial.println("Set LED OFF");
-  }
-
+//Test HW Relais
+  digitalWrite(luefter_PIN, HIGH);
+  Serial.println("luefter_PIN");
+  delay(1000);
+  digitalWrite(heizung_PIN, HIGH);
+  Serial.println("heizung_PIN");
+  delay(1000);
+  digitalWrite(relais_PIN, HIGH);
+  Serial.println("relais_PIN");
+  delay(1000);
+  digitalWrite(led_PIN, HIGH);
+  Serial.println("led_PIN");
+  delay(1000);
+  digitalWrite(luefter_PIN, LOW);
+  Serial.println("luefter_PIN");
+  delay(1000);
+  digitalWrite(heizung_PIN, LOW);
+  Serial.println("heizung_PIN");
+  delay(1000);
+  digitalWrite(relais_PIN, LOW);
+  Serial.println("relais_PIN");
+  delay(1000);
+  digitalWrite(led_PIN, LOW);
+  Serial.println("led_PIN");
   delay(1000);
   Serial.println("LOOP");
 
