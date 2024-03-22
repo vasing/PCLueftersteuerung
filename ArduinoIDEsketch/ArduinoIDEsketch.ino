@@ -1,9 +1,24 @@
+/*LIBS-------------------------*/
+//DS18B20 Temperature Sensor
+#include "OneWire.h"
+#include "DallasTemperature.h"
+/*-----------------------------*/
+
+// Define to which pin of the Arduino the 1-Wire bus is connected:
+#define ONE_WIRE_BUS 2
+
+// Create a new instance of the oneWire class to communicate with any OneWire device:
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Pass the oneWire reference to DallasTemperature library:
+DallasTemperature sensors(&oneWire);
+
 /*PINS-------------------------*/
 //INPPUT
 int const tacho_PIN = 13;
 int const DHT1_PIN = 9;
 int const DHT2_PIN = 10;
-int const safety_temp_PIN = 2;   //Safety Temp (DS18B20)
+//int const safety_temp_PIN = 2;   //Safety Temp (DS18B20)
 int const heizung_Taster_PIN = 0;   //todo Doku
 //OUTPUT
 int const luefter_PIN = 4;
@@ -56,7 +71,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(heizung_Taster_PIN), ISR_Heizung_Taster, FALLING);
   attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR_TACHO, CHANGE);
   pinMode(DHT1_PIN, INPUT);
-  pinMode(safety_temp_PIN, INPUT_PULLUP); 
+//  pinMode(safety_temp_PIN, INPUT_PULLUP); 
   pinMode(heizung_Taster_PIN, INPUT_PULLUP); 
 //OUTPUT
   //RALAIS
@@ -103,10 +118,17 @@ void setup() {
       90
       100 255
   */
+
+  sensors.begin();  //DS18B20 Temperature Sensor
+
 }
 
 void loop() {
 
+  sensors.requestTemperatures();
+  float tempC = sensors.getTempCByIndex(0);
+  Serial.print("Temperature: ");
+  Serial.print(tempC);  
 /*
 //Test HW Relais
   digitalWrite(luefter_PIN, HIGH);
