@@ -3,13 +3,13 @@
 int const tacho_PIN = 13;
 int const DHT1_PIN = 9;
 int const DHT2_PIN = 10;
-int const safety_temp_PIN = 12;
-int const heizung_Taster_PIN = 14;   //todo Doku
+int const safety_temp_PIN = 2;   //Safety Temp (DS18B20)
+int const heizung_Taster_PIN = 0;   //todo Doku
 //OUTPUT
 int const luefter_PIN = 4;
 int const heizung_PIN = 5;
-int const led_PIN = 0;
-int const relais_PIN = 2;
+int const led_PIN = 14;
+int const relais_PIN = 12;
 //const int pwmPIN = 15   
 int const safety_PIN = 15;
 /*-----------------------------*/
@@ -19,10 +19,10 @@ int const safety_PIN = 15;
 (D0) = 16 
   D1 = 5  heizung_PIN
   D2 = 4  luefter_PIN
-(D3) = 0  led_PIN
-(D4) = 2  relais_PIN
-  D5 = 14 Safety Temp (DS18B20)
-  D6 = 12 safety_temp_PIN
+(D3) = 0  heizung_Taster_PIN
+(D4) = 2  Safety Temp (DS18B20)
+  D5 = 14 led_PIN
+  D6 = 12 relais_PIN
   D7 = 13 tacho_PIN
   D8 = 15 safety_PIN
 (RX) = 3
@@ -56,14 +56,31 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(heizung_Taster_PIN), ISR_Heizung_Taster, FALLING);
   attachInterrupt(digitalPinToInterrupt(tacho_PIN), ISR_TACHO, CHANGE);
   pinMode(DHT1_PIN, INPUT);
-   pinMode(safety_temp_PIN, INPUT_PULLUP); 
+  pinMode(safety_temp_PIN, INPUT_PULLUP); 
   pinMode(heizung_Taster_PIN, INPUT_PULLUP); 
 //OUTPUT
-  pinMode(luefter_PIN, OUTPUT);
-  pinMode(heizung_PIN, OUTPUT);
-  pinMode(relais_PIN, OUTPUT);
-  pinMode(led_PIN, OUTPUT);
-
+  //RALAIS
+  pinMode(luefter_PIN, OUTPUT); //init output tbd
+  pinMode(heizung_PIN, OUTPUT); //init output tbd
+  pinMode(relais_PIN, OUTPUT);  //init output tbd
+  pinMode(led_PIN, OUTPUT);     //init output tbd
+  delay(1000);
+    /*
+    //RALAIS INIT SEQUENCE
+    digitalWrite(luefter_PIN, HIGH);
+    Serial.println("luefter_OFF");
+    delay(1000);
+    digitalWrite(heizung_PIN, HIGH);
+    Serial.println("heizung_OFF");
+    delay(1000);
+    digitalWrite(led_PIN, HIGH);
+    Serial.println("led_OFF");
+    delay(1000);
+    digitalWrite(relais_PIN, HIGH);
+    Serial.println("relais_OFF");
+    delay(1000);
+    */
+  //SAFETY PIN
   pinMode(safety_PIN, OUTPUT); 
 
 
@@ -90,33 +107,37 @@ void setup() {
 
 void loop() {
 
+/*
 //Test HW Relais
   digitalWrite(luefter_PIN, HIGH);
-  Serial.println("luefter_PIN");
+  Serial.println("luefter_OFF");
   delay(1000);
   digitalWrite(heizung_PIN, HIGH);
-  Serial.println("heizung_PIN");
-  delay(1000);
-  digitalWrite(relais_PIN, HIGH);
-  Serial.println("relais_PIN");
+  Serial.println("heizung_OFF");
   delay(1000);
   digitalWrite(led_PIN, HIGH);
-  Serial.println("led_PIN");
+  Serial.println("led_OFF");
   delay(1000);
+  digitalWrite(relais_PIN, HIGH);
+  Serial.println("relais_OFF");
+  delay(1000);
+ 
+ 
   digitalWrite(luefter_PIN, LOW);
-  Serial.println("luefter_PIN");
+  Serial.println("luefter_ON");
   delay(1000);
   digitalWrite(heizung_PIN, LOW);
-  Serial.println("heizung_PIN");
-  delay(1000);
-  digitalWrite(relais_PIN, LOW);
-  Serial.println("relais_PIN");
+  Serial.println("heizung_ON");
   delay(1000);
   digitalWrite(led_PIN, LOW);
-  Serial.println("led_PIN");
+  Serial.println("led_ON");
   delay(1000);
+  digitalWrite(relais_PIN, LOW);
+  Serial.println("relais_ON");
+  delay(1000);
+*/
   Serial.println("LOOP");
-
+  delay(1000);
 
 /*
   switch (state)
