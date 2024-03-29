@@ -2,16 +2,26 @@
 //DS18B20 Temperature Sensor
 #include "OneWire.h"
 #include "DallasTemperature.h"
+//DHT22
+#include "DHT.h"
 /*-----------------------------*/
+
+
 
 // Define to which pin of the Arduino the 1-Wire bus is connected:
 #define ONE_WIRE_BUS 34
+
+#define DHTPIN 35
 
 // Create a new instance of the oneWire class to communicate with any OneWire device:
 OneWire oneWire(ONE_WIRE_BUS);
 
 // Pass the oneWire reference to DallasTemperature library:
 DallasTemperature sensors(&oneWire);
+
+#define DHTTYPE DHT22
+
+DHT dht(DHTPIN, DHTTYPE);
 
 /*PINS-------------------------*/
 //INPPUT
@@ -37,6 +47,8 @@ int const relais_PIN = 16;
  G34 = 34 Safety Temp (DS18B20)
  G17 = 17 led_PIN
  G16 = 16 relais_PIN
+
+ G35 = 35 DHT22 1
 
 -----------------------------*/
 
@@ -116,6 +128,8 @@ void setup() {
 
   sensors.begin();  //DS18B20 Temperature Sensor
 
+  dht.begin();
+
 }
 
 void loop() {
@@ -154,6 +168,41 @@ void loop() {
   Serial.println("relais_ON");
   delay(1000);
 */
+
+//Test HW Relais Test
+  // Reading temperature or humidity takes about 250 milliseconds!
+  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+  float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = dht.readTemperature();
+  // Read temperature as Fahrenheit (isFahrenheit = true)
+  float f = dht.readTemperature(true);
+
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(h) || isnan(t) || isnan(f)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+
+  // Compute heat index in Fahrenheit (the default)
+  float hif = dht.computeHeatIndex(f, h);
+  // Compute heat index in Celsius (isFahreheit = false)
+  float hic = dht.computeHeatIndex(t, h, false);
+
+  Serial.print(F("Humidity: "));
+  Serial.print(h);
+  Serial.print(F("%  Temperature: "));
+  Serial.print(t);
+  Serial.print(F("°C "));
+  Serial.print(f);
+  Serial.print(F("°F  Heat index: "));
+  Serial.print(hic);
+  Serial.print(F("°C "));
+  Serial.print(hif);
+  Serial.println(F("°F"));
+
+
+
   Serial.println("LOOP");
   delay(1000);
 
