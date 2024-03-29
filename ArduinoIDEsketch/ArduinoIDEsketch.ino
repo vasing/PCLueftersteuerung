@@ -1,17 +1,17 @@
 /*LIBS-------------------------*/
 //DS18B20 Temperature Sensor
-//#include "OneWire.h"
-//#include "DallasTemperature.h"
+#include "OneWire.h"
+#include "DallasTemperature.h"
 /*-----------------------------*/
 
 // Define to which pin of the Arduino the 1-Wire bus is connected:
-//#define ONE_WIRE_BUS 2
+#define ONE_WIRE_BUS 34
 
 // Create a new instance of the oneWire class to communicate with any OneWire device:
-//OneWire oneWire(ONE_WIRE_BUS);
+OneWire oneWire(ONE_WIRE_BUS);
 
 // Pass the oneWire reference to DallasTemperature library:
-//DallasTemperature sensors(&oneWire);
+DallasTemperature sensors(&oneWire);
 
 /*PINS-------------------------*/
 //INPPUT
@@ -31,19 +31,13 @@ int const relais_PIN = 16;
 
 /* ESP32 GPIO Pins
  PIN   GPIO
-(D0) = 16 
-  D1 = 5  heizung_PIN
-  D2 = 4  luefter_PIN
-(D3) = 0  heizung_Taster_PIN
-(D4) = 2  Safety Temp (DS18B20)
-  D5 = 14 led_PIN
-  D6 = 12 relais_PIN
-  D7 = 13 tacho_PIN
-  D8 = 15 safety_PIN
-(RX) = 3
-(TX) = 1
- SD3 = 10 DHT2
- SD2 = 9  DHT1
+ G18 = 18 heizung_PIN
+ G19 = 19 luefter_PIN
+
+ G34 = 34 Safety Temp (DS18B20)
+ G17 = 17 led_PIN
+ G16 = 16 relais_PIN
+
 -----------------------------*/
 
 /*VARIABLEN State Machine*/
@@ -79,7 +73,8 @@ void setup() {
   pinMode(heizung_PIN, OUTPUT); //init output tbd
   pinMode(relais_PIN, OUTPUT);  //init output tbd
   pinMode(led_PIN, OUTPUT);     //init output tbd
-  delay(1000);
+  
+  //delay(1000);
     /*
     //RALAIS INIT SEQUENCE
     digitalWrite(luefter_PIN, HIGH);
@@ -119,20 +114,18 @@ void setup() {
       100 255
   */
 
-//  sensors.begin();  //DS18B20 Temperature Sensor
+  sensors.begin();  //DS18B20 Temperature Sensor
 
 }
 
 void loop() {
-/*
+
   sensors.requestTemperatures();
   float tempC = sensors.getTempCByIndex(0);
-  Serial.print("Temperature: ");
-  Serial.print(tempC);  
-*/
+  Serial.println("Temperature: ");
+  Serial.println(tempC);  
 
-
-
+/*
 //Test HW Relais
   digitalWrite(luefter_PIN, HIGH);
   Serial.println("luefter_OFF");
@@ -160,9 +153,10 @@ void loop() {
   digitalWrite(relais_PIN, LOW);
   Serial.println("relais_ON");
   delay(1000);
-
+*/
   Serial.println("LOOP");
   delay(1000);
+
 
 /*
   switch (state)
